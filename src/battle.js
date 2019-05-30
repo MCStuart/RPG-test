@@ -14,7 +14,7 @@ export class Combat {
   advanceTurn() {
     for (let i = 0; i < this.turnOrder.length; i++) {
       this.currentTurn++;
-      if (this.currentTurn > this.turnOrder.length) {
+      if (this.currentTurn >= this.turnOrder.length) {
         this.currentTurn = 0;
       }
       if (this.turnOrder[this.currentTurn].healthCurrent > 0) {
@@ -38,9 +38,9 @@ export class Combat {
   }
   //target.xp
 
-  CheckForVictory(){
-    let lastStanding = this.combattants.filter(function(entity){
-      if(entity.status !== "Dead"){
+  CheckForVictory() {
+    let lastStanding = this.combattants.filter(function (entity) {
+      if (entity.status !== "Dead") {
         return true;
       } else {
         return false;
@@ -48,13 +48,11 @@ export class Combat {
     });
     let allegiances = [];
     lastStanding.forEach(element => {
-      if(!allegiances.includes(element.alllegiance)){
-        allegiances.push(element.alllegiance);
-        
+      if (!allegiances.includes(element.allegiance) || element.allegiance === "None") {
+        allegiances.push(element.allegiance);
       }
     })
-    if(allegiances.length ===1)
-    {
+    if (allegiances.length === 1) {
       this.status = "Finished";
     }
   }

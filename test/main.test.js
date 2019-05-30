@@ -33,9 +33,9 @@ describe('Character', function () {
 });
 
 describe('Combat', function () {
-  let knight;
-  let enemy1, enemy2, enemy3, jaredsStupidMagazineEater;
-
+  let knight, wiz;
+  let enemy1, enemy2, jaredsStupidMagazineEater;
+  let none1, none2;
   beforeEach(function() {
     knight = new Character({
       name: "Sir Knight",
@@ -44,6 +44,15 @@ describe('Combat', function () {
       allegiance: "Honor",
       strength: 15,
       vitality: 12
+    });
+    wiz = new Character({
+      name: "The Cheese Wiz",
+      class: "Wizard",
+      race: "Elf",
+      allegiance: "Honor",
+      strength: 6,
+      vitality: 8,
+      intelligence: 18
     });
     enemy1 = new Enemy({
       name: "Creature1",
@@ -59,8 +68,13 @@ describe('Combat', function () {
       dexterity: 20,
       allegiance: "Monster"
     });
-    enemy3 = new Enemy({
-      name:"Tom BombAhill"
+    none1 = new Enemy({
+      name:"Tom Bomb-A-Hill",
+      dexterity: 12,
+      strength: 50
+    });
+    none2 = new Enemy({
+      name:"Bob the unicorn centaur"
     });
     jaredsStupidMagazineEater = new Enemy({
       name: "Durr The Mag Muncher",
@@ -77,6 +91,14 @@ describe('Combat', function () {
     expect(combat.combattants[0].name).toEqual("Sir Knight");
     expect(combat.combattants[1].name).toEqual("Creature1");
     expect(combat.combattants[2].name).toEqual("Creature2");
+  });
+
+  it('combat turn advance', function () {
+    let combat = new Combat([knight, enemy1, enemy2]);
+    combat.advanceTurn();
+    combat.advanceTurn();
+    combat.advanceTurn();
+    expect(combat.currentTurn).toEqual(0);
   });
 
 
@@ -110,6 +132,16 @@ describe('Combat', function () {
 
   it('killed sir knight', function() {
     let combat = new Combat([knight, enemy1, enemy2]);
+    combat.Attack("Sir Knight");
+    combat.Attack("Sir Knight");
+    combat.Attack("Sir Knight");
+    combat.Attack("Sir Knight");
+    expect(knight.status).toEqual("Dead");
+  });
+
+  it('attack dead target', function() {
+    let combat = new Combat([knight, enemy2]);
+    combat.Attack("Sir Knight");
     combat.Attack("Sir Knight");
     combat.Attack("Sir Knight");
     combat.Attack("Sir Knight");
@@ -165,6 +197,32 @@ describe('Combat', function () {
     combat.Attack("Sir Knight");
     combat.Attack("Sir Knight");
     combat.Attack("Sir Knight");
+    expect(combat.status).toEqual("Finished");
+  })
+
+  it('Will end combat 2X2', function() {
+    let combat = new Combat([enemy2, knight, wiz, enemy1]);
+    combat.Attack("Sir Knight");
+    combat.Attack("Sir Knight");
+    combat.Attack("Sir Knight");
+    combat.Attack("Sir Knight");
+    combat.Attack("The Cheese Wiz");
+    combat.Attack("The Cheese Wiz");
+    combat.Attack("The Cheese Wiz");    
+    expect(combat.status).toEqual("Finished");
+  })
+
+  it('Will end combat 1v1v2', function() {
+    let combat = new Combat([none1, none2, wiz, knight]);
+    combat.Attack("Sir Knight");
+    combat.Attack("Sir Knight");
+    combat.Attack("Sir Knight");
+    expect(combat.status).toEqual("Ongoing");
+    combat.Attack("The Cheese Wiz");
+    combat.Attack("The Cheese Wiz");
+    expect(combat.status).toEqual("Ongoing");
+    combat.Attack("Bob the unicorn centaur");
+    combat.Attack("Bob the unicorn centaur");
     expect(combat.status).toEqual("Finished");
   })
 });

@@ -11,6 +11,7 @@ class Statistics {
     this.status = "Alive";
     this.allegiance = "None";
     Object.assign(this, stats);
+  
     this.healthCurrent = this.healthMax = Math.floor(this.vitality * (0.75 + this.level / 4));
   }
 

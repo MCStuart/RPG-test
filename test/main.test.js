@@ -226,3 +226,4 @@ describe('Combat', function () {
     expect(combat.status).toEqual("Finished");
   })
 });
+

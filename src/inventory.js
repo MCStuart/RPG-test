@@ -9,6 +9,15 @@ export class Inventory{
   addItem(item){
     this.items.push(item);
   }
+
+  removeItem(itemName) {
+    for(let i = 0; i < this.items.length; i++)
+    {
+      if(this.items[i].name === itemName) {
+        this.items.splice(i, 1);
+      }
+    }
+  }
 }
 
 export class Item {

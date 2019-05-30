@@ -23,6 +23,13 @@ describe('Inventory', function () {
       expect(knight.inventory.items[0].name).toEqual("Sword");
       expect(knight.inventory.items[0].damageType).toEqual("Phyiscal");
     });
+
+    it("inventory remove item", function() {
+      knight.inventory.addItem({name: "Sword", weight:12, value:0, damage:1, damageType: "Physical"})
+      expect(knight.inventory.items[0].name).toEqual("Sword");
+      knight.inventory.removeItem("Shield");
+      expect(knight.inventory.items.length).toEqual(2);
+    })
   });
     
 describe('Item', function() {
@@ -33,3 +40,4 @@ describe('Item', function() {
     expect(ironArmor.name).toEqual("Iron Armor");
   });
 });
+

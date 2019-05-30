@@ -9,6 +9,7 @@ class Statistics {
     this.class = "Nobody";
     this.race = "Blob";
     this.status = "Alive";
+    this.allegiance = "None";
     Object.assign(this, stats);
     this.healthCurrent = this.healthMax = Math.floor(this.vitality * (0.75 + this.level / 4));
   }
@@ -28,7 +29,7 @@ class Statistics {
     return (Math.pow(this.level, 2) * 10);
   }
   
-
+ 
   levelUp() {
     this.level++;
     this.statPoints += 5;

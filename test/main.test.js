@@ -34,13 +34,14 @@ describe('Character', function () {
 
 describe('Combat', function () {
   let knight;
-  let enemy1, enemy2;
+  let enemy1, enemy2, enemy3, jaredsStupidMagazineEater;
 
   beforeEach(function() {
     knight = new Character({
       name: "Sir Knight",
       class: "Knight",
       race: "Human",
+      allegiance: "Honor",
       strength: 15,
       vitality: 12
     });
@@ -48,14 +49,27 @@ describe('Combat', function () {
       name: "Creature1",
       vitality: 5,
       strength: 2,
-      dexterity: 8
+      dexterity: 8,
+      allegiance: "Monster"
     });
     enemy2 = new Enemy({
       name: "Creature2",
       vitality: 20,
       strength: 20,
-      dexterity: 20
+      dexterity: 20,
+      allegiance: "Monster"
     });
+    enemy3 = new Enemy({
+      name:"Tom BombAhill"
+    });
+    jaredsStupidMagazineEater = new Enemy({
+      name: "Durr The Mag Muncher",
+      vitality: 1,
+      level: 5,
+      strength: -3,
+      dexterity: 0.5
+    });
+
   });
 
   it('create combat', function () {
@@ -119,23 +133,38 @@ describe('Combat', function () {
     combat.Attack("Sir Knight");
     combat.Attack("Sir Knight");
     combat.Attack("Sir Knight");
-    enemy1.giveXp(3);
-    expect(enemy1.xp).toEqual(3);
+    expect(enemy2.xp).toEqual(3);
   });
 
   it('will level up', function() {
-    let combat = new Combat([knight, enemy1, enemy2]);
-    combat.Attack("Sir Knight");
-    combat.Attack("Sir Knight");
-    combat.Attack("Sir Knight");
-    combat.Attack("Sir Knight");
-    enemy1.giveXp(10);
-    expect(enemy1.level).toEqual(2);
+    let combat = new Combat([knight, jaredsStupidMagazineEater]);
+    combat.Attack("Durr The Mag Muncher");
+    combat.Attack("Durr The Mag Muncher");
+    expect(knight.level).toEqual(3);
   });
 
-  it('will level up', function() {
-    let enemy3 = new Enemy(...enemy2);
-    console.log(enemy3);
-  });
+  // it('Will end Comabat', function() {
+  //   let combat = new Combat([knight, jaredsStupidMagazineEater]);
+  //   combat.Attack("Durr The Mag Muncher");
+  //   combat.Attack("Durr The Mag Muncher");
+  //   expect(jaredsStupidMagazineEater.status).toEqual("Dead");
+  //   expect(combat.status).toEqual("Finished");
+  // })
   // get xp amount = 1/4 of same level enemy
+
+  it('Will end combat 1X1', function() {
+    let combat = new Combat([knight, jaredsStupidMagazineEater]);
+    combat.Attack("Durr The Mag Muncher");
+    combat.Attack("Durr The Mag Muncher");    
+    expect(combat.status).toEqual("Finished");
+  })
+
+  it('Will end combat 1X2', function() {
+    let combat = new Combat([enemy2, knight, enemy1]);
+    combat.Attack("Sir Knight");
+    combat.Attack("Sir Knight");
+    combat.Attack("Sir Knight");
+    combat.Attack("Sir Knight");
+    expect(combat.status).toEqual("Finished");
+  })
 });

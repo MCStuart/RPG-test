@@ -21,7 +21,6 @@ export class Combat {
         return;
       }
     }
-    this.status = "Finished";
   }
 
   Attack(targetName) {
@@ -33,8 +32,30 @@ export class Combat {
       }
       if (target.status == "Dead") {
         this.turnOrder[this.currentTurn].giveXp(Math.ceil(target.getLevelXp() / 4));
+        this.CheckForVictory();
       }
     }
   }
   //target.xp
+
+  CheckForVictory(){
+    let lastStanding = this.combattants.filter(function(entity){
+      if(entity.status !== "Dead"){
+        return true;
+      } else {
+        return false;
+      }
+    });
+    let allegiances = [];
+    lastStanding.forEach(element => {
+      if(!allegiances.includes(element.alllegiance)){
+        allegiances.push(element.alllegiance);
+        
+      }
+    })
+    if(allegiances.length ===1)
+    {
+      this.status = "Finished";
+    }
+  }
 }
